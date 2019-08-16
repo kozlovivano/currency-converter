@@ -12,16 +12,16 @@ function textNodesUnder(node) {
 var textNodes = textNodesUnder(document.body);
 for (var i = 0; i < textNodes.length; i++) {
     if (currencies.includes(textNodes[i].nodeValue)) {
-        textNodes[i + 1].nodeValue = parseInt(parseFloat(textNodes[i + 1].nodeValue.replace(",", "")) * getRate(textNodes[i].nodeValue))
+        textNodes[i + 1].nodeValue = formatNumberToCurrencyType(parseInt(parseFloat(textNodes[i + 1].nodeValue.replace(",", "")) * getRate(textNodes[i].nodeValue)));
         textNodes[i].nodeValue = twik_user_data.location.currency_symbol;
     }
 
     textNodes[i].nodeValue = textNodes[i].nodeValue.replace(/((\d|,|\.)+(\$|€|₪|£))|((\$|€|₪|£)(\d|,|\.)+)/g, function(match, token) {
         let number = parseFloat(match.replace(/\$|€|₪|£|,/g, ""));
         if (currencies.includes(match.charAt(0))) {
-            return twik_user_data.location.currency_symbol + parseInt(number * getRate(match.charAt(0)));
+            return twik_user_data.location.currency_symbol + formatNumberToCurrencyType(parseInt(number * getRate(match.charAt(0))));
         } else {
-            return parseInt(number * getRate(match.charAt(match.length - 1))) + twik_user_data.location.currency_symbol;
+            return formatNumberToCurrencyType(parseInt(number * getRate(match.charAt(match.length - 1)))) + twik_user_data.location.currency_symbol;
         }
     })
 }
@@ -41,7 +41,7 @@ currencyElems.map(value => {
         }
     }
 
-    numberChild.nodeValue = parseInt(number * getRate(symbol));
+    numberChild.nodeValue = formatNumberToCurrencyType(parseInt(number * getRate(symbol)));
     value.innerText = twik_user_data.location.currency_symbol;
 });
 
@@ -57,6 +57,10 @@ function getRate(symbol) {
     }
 }
 
+function formatNumberToCurrencyType(num) {
+  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+}
+
 function drawDropdown(node){
-    
+
 }
