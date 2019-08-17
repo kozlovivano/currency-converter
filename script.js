@@ -104,9 +104,15 @@ function changeCurrency(currency){
     }else if(currency.includes("€")){
         console.log("Convert " + twik_user_data.location.currency + " to EUR");
         convert("€");
-    }else{
+    }else if(currency.includes("₪")){
         console.log("Convert " + twik_user_data.location.currency + " to ILS");
-        convert("€");
+        convert("₪");
+    }else if(currency.includes("£")){
+        console.log("Convert " + twik_user_data.location.currency + " to GBP");
+        convert("£");
+    }else if(currency.includes("руб.")){
+        console.log("Convert " + twik_user_data.location.currency + " to RUB");
+        convert("руб.");
     }
 }
 
@@ -117,7 +123,7 @@ var dropdown_icon = document.createElement("i");
 var dropdown_text = document.createElement("div");
 
 var dropdown_children = document.createElement("nav");
-var children = ["דולר ($)", "אירו (€)", "שקלים (₪)"];
+var children = ["דולר ($)", "אירו (€)", "שקלים (₪)", "(£)לירה", "(руб.)רובל"];
 
 setTimeout(function(){
 
@@ -136,7 +142,7 @@ setTimeout(function(){
     dropdown_text.innerText = "דולר ($)";
 
     dropdown_icon.addClass("icon-contact");
-    dropdown_icon.style.paddingLeft = "15px";
+    dropdown_icon.style.paddingLeft = "5px";
     dropdown_icon.style.marginTop = "5px";
     dropdown_icon.style.color = "#d20018";
     dropdown_icon.style.fontSize = "15px";
