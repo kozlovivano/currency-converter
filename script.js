@@ -89,7 +89,8 @@ HTMLElement.prototype.pseudoStyle = function(element,prop,value){
 // -------
 
 function changeCurrency(currency){
-
+    dropdown_text.innerText = currency;
+    dropdown_children.style.display = "none";
 }
 
 // ------- Render dropdown --------
@@ -136,6 +137,9 @@ setTimeout(function(){
         child_tag.style.marginRight = "auto";
         child_tag.style.whiteSpace = "nowrap";
         child_tag.innerText = child;
+        child_tag.onclick = function(){
+            changeCurrency( this.innerText );
+        }
         dropdown_children.append(child_tag);
     }
     dropdown_parent.append(dropdown_children);
