@@ -105,9 +105,17 @@ var children = ["דולר ($)", "אירו (€)", "שקלים (₪)"];
 setTimeout(function(){
 
     dropdown_parent.style.position = "absolute";
-    dropdown_parent.style.right = "-50px";
+    dropdown_parent.style.width = "70px";
     dropdown_parent.style.top = "5px";
+    dropdown_parent.style.right = "0px";
+    dropdown_parent.style.textAlign = "center";
     dropdown_parent.style.cursor = "pointer";
+    dropdown_parent.onmouseenter = function(){
+        dropdown_children.style.display = "block";
+    }
+    dropdown_parent.onmouseleave = function(){
+        dropdown_children.style.display = "none";
+    }
     dropdown_text.innerText = "דולר ($)";
 
     dropdown_icon.addClass("icon-contact");
@@ -118,9 +126,11 @@ setTimeout(function(){
     dropdown_parent.append(dropdown_icon);
     dropdown_parent.append(dropdown_text);
 
+    dropdown_children.style.position = "relative";
+    dropdown_children.style.display = "none";
     dropdown_text.style.lineHeight = "14px";
     document.getElementsByClassName("links-and-phones-section")[1].append(dropdown_parent);
-
+    var idx = 0;
     for(var child of children){
         var child_tag = document.createElement("li");
         child_tag.pseudoStyle("hover", "background", "#ebebeb !important");
@@ -129,8 +139,10 @@ setTimeout(function(){
         child_tag.style.padding = "10px 20px";
         child_tag.style.display = "block";
         child_tag.style.color = "#222";
+        child_tag.style.top = (40 * idx).toString() + "px";
+        child_tag.style.width = "100px";
         child_tag.style.background = "#fff"
-        child_tag.style.position = "relative";
+        child_tag.style.position = "absolute";
         child_tag.style.verticalAlign = "top";
         child_tag.style.textDecoration = "none";
         child_tag.style.marginLeft = "auto";
@@ -141,6 +153,7 @@ setTimeout(function(){
             changeCurrency( this.innerText );
         }
         dropdown_children.append(child_tag);
+        idx++;
     }
     dropdown_parent.append(dropdown_children);
 }, 3000);
