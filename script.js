@@ -1,6 +1,6 @@
-let currencies = ["$", "€", "₪", "£"];
-var textNodes = textNodesUnder(document.body);
-let currencyElems = [...document.querySelectorAll("*")].filter(value => currencies.includes(value.innerHTML));
+let currencies = ["$", "€", "₪", "£", "руб."];
+var textNodes;
+let currencyElems;
 
 function textNodesUnder(node) {
     var all = [];
@@ -20,6 +20,8 @@ function getRate(symbol) {
         return twik_user_data.location.gbp_exchange_rate;
     } else if (symbol === "₪") {
         return twik_user_data.location.nis_exchange_rate;
+    } else {
+        return 1;
     }
 }
 
@@ -27,21 +29,23 @@ function formatNumberToCurrencyType(num) {
   return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 }
 
-function convert(){
+function convert(_symbol = twik_user_data.location.currency_symbol){
+    textNodes = textNodesUnder(document.body);
+    currencyElems = [...document.querySelectorAll("*")].filter(value => currencies.includes(value.innerHTML));
 
     for (var i = 0; i < textNodes.length; i++) {
         // Symbol and price are in the different node
         if (currencies.includes(textNodes[i].nodeValue)) {
-            textNodes[i + 1].nodeValue = formatNumberToCurrencyType(parseInt(parseFloat(textNodes[i + 1].nodeValue.replace(",", "")) * getRate(textNodes[i].nodeValue)));
-            textNodes[i].nodeValue = twik_user_data.location.currency_symbol;
+            textNodes[i + 1].nodeValue = formatNumberToCurrencyType(parseInt(parseFloat(textNodes[i + 1].nodeValue.replace(",", "")) * getRate(textNodes[i].nodeValue) / getRate(_symbol)));
+            textNodes[i].nodeValue = _symbol;
         }
         // Symbol and price are in the same node
         textNodes[i].nodeValue = textNodes[i].nodeValue.replace(/((\d|,|\.)+(\$|€|₪|£))|((\$|€|₪|£)(\d|,|\.)+)/g, function(match, token) {
             let number = parseFloat(match.replace(/\$|€|₪|£|,/g, ""));
             if (currencies.includes(match.charAt(0))) {
-                return twik_user_data.location.currency_symbol + formatNumberToCurrencyType(parseInt(number * getRate(match.charAt(0))));
+                return _symbol + formatNumberToCurrencyType(parseInt(number * getRate(match.charAt(0)) / getRate(_symbol)));
             } else {
-                return formatNumberToCurrencyType(parseInt(number * getRate(match.charAt(match.length - 1)))) + twik_user_data.location.currency_symbol;
+                return formatNumberToCurrencyType(parseInt(number * getRate(match.charAt(match.length - 1)) / getRate(_symbol))) + _symbol;
             }
         })
     }
@@ -59,8 +63,8 @@ function convert(){
                 break;
             }
         }
-        numberChild.nodeValue = formatNumberToCurrencyType(parseInt(number * getRate(symbol)));
-        value.innerText = twik_user_data.location.currency_symbol;
+        numberChild.nodeValue = formatNumberToCurrencyType(parseInt(number * getRate(symbol) / getRate(_symbol)));
+        value.innerText = _symbol;
     });
 }
 // ------------------------------------ Custom code for making dropdown element --------------------------------------- //
@@ -96,10 +100,13 @@ function changeCurrency(currency){
     dropdown_children.style.display = "none";
     if(currency.includes("$")){
         console.log("Convert " + twik_user_data.location.currency + " to USD");
+        convert("$");
     }else if(currency.includes("€")){
         console.log("Convert " + twik_user_data.location.currency + " to EUR");
+        convert("€");
     }else{
         console.log("Convert " + twik_user_data.location.currency + " to ILS");
+        convert("€");
     }
 }
 
