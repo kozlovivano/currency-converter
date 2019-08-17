@@ -49,7 +49,7 @@ function convert(_symbol = twik_user_data.location.currency_symbol){
             }
         })
     }
-
+    // Long symbol
     currencyElems.map(value => {
         let symbol = value.innerText;
         let numberChild;
