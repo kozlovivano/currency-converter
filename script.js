@@ -123,13 +123,13 @@ var dropdown_icon = document.createElement("i");
 var dropdown_text = document.createElement("div");
 
 var dropdown_children = document.createElement("nav");
-var children = ["דולר ($)", "אירו (€)", "שקלים (₪)", "(£)לירה", "(руб.)רובל"];
+var children = ["דולר ($)", "אירו (€)", "שקלים (₪)"];
 
 setTimeout(function(){
 
-    dropdown_parent.style.position = "absolute";
+    dropdown_parent.style.position = "relative";
     dropdown_parent.style.width = "70px";
-    dropdown_parent.style.top = "5px";
+    dropdown_parent.style.top = "-3px";
     dropdown_parent.style.right = "0px";
     dropdown_parent.style.textAlign = "center";
     dropdown_parent.style.cursor = "pointer";
@@ -141,9 +141,9 @@ setTimeout(function(){
     }
     dropdown_text.innerText = "דולר ($)";
 
-    dropdown_icon.addClass("icon-contact");
+    dropdown_icon.addClass("icon-cheapest");
     dropdown_icon.style.paddingLeft = "5px";
-    dropdown_icon.style.marginTop = "5px";
+    //dropdown_icon.style.marginTop = "5px";
     dropdown_icon.style.color = "#d20018";
     dropdown_icon.style.fontSize = "15px";
     dropdown_parent.append(dropdown_icon);
@@ -152,7 +152,8 @@ setTimeout(function(){
     dropdown_children.style.position = "relative";
     dropdown_children.style.display = "none";
     dropdown_text.style.lineHeight = "14px";
-    document.getElementsByClassName("links-and-phones-section")[1].append(dropdown_parent);
+    //document.getElementsByClassName("links-and-phones-section")[1].append(dropdown_parent);
+    document.getElementsByClassName("contact-us-content")[0].before(dropdown_parent)
     var idx = 0;
     for(var child of children){
         var child_tag = document.createElement("li");
